@@ -19,9 +19,9 @@ $rows = $conn->prepare($address_sql);
 $rows->execute([]);
 $data = $rows->fetch();
 
-var_dump($data);
-if (isset($address) && $address == true && ($data > 0)) {
-    header("Content-Type: application/json");
+//var_dump($data);
+header("Content-Type: application/json");
+if ($address == 'true' && (is_array($data))) {
     echo json_encode($data);
 } else {
     header("HTTP/1.0 404 Not Found");
