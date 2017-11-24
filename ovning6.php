@@ -13,9 +13,9 @@ $id = $_GET['company_id'];
 $sql = 'SELECT * 
 FROM customer
 LEFT JOIN customer_address ON customer.id = customer_address.customer_id
-WHERE customer.company_id = "'.$id.'"';
+WHERE customer.company_id = :id';
 $rows = $conn->prepare($sql);
-$rows->execute([]);
+$rows->execute([':id' => $id]);
 $data = $rows->fetchAll();
 
 if (is_array($data)) {

@@ -15,7 +15,7 @@ $customer_data = $rows->fetchAll();
 header("Content-Type: application/json");
 //echo json_encode($customer_data);
 
-/*$companies = [];
+$companies = [];
 
 foreach ($customer_data as $customer) {
     $companies[] = $customer['customer_company'];
@@ -27,7 +27,7 @@ foreach (array_unique($companies) as $company) {
     $companies_stm->execute([
         ':company_name' => $company
     ]);
-}*/
+}
 
 $company_sql = 'SELECT * FROM companies';
 $company_rows = $conn->prepare($company_sql);

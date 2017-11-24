@@ -9,18 +9,20 @@ $conn = new PDO("mysql:host=$server;dbname=$db", $username, $password);
 
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$id = $_GET['customer_id'];
+$id = (int)$_GET['customer_id'];
 $sql = 'SELECT * 
 FROM customer
 LEFT JOIN customer_address ON customer.id = customer_address.customer_id
-WHERE customer.id = "'.$id.'"';
+WHERE customer.id = :id';
 $rows = $conn->prepare($sql);
-$rows->execute([]);
-$data = $rows->fetch();
+$rows->execute([':id' => $id]);
+$response = $rows->fetch();
+$status = 200;
 
-if (is_array($data)) {
-    echo json_encode($data);
-} else {
-    header("HTTP/1.0 404 Not Found");
-    echo json_encode(["message" => "Customer not found"]);
+if ($response == null) {
+    $status = 400;
+    $response = ["message" => "Customer not found"];
 }
+
+header("Content-Type: application/json", true, $status);
+echo json_encode($response);

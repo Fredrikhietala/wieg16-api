@@ -16,3 +16,29 @@ $rows = $conn->query($sql);
 $data = $rows->fetchAll();
 header("Content-Type: application/json");
 echo json_encode($data);
+
+// lösning 2
+
+$customers = $conn->query('SELECT * FROM customers')->fetchAll();
+$addresses = $conn->query('SELECT * FROM customers_address')->fetchAll();
+
+foreach ($customers as $index => $customer) {
+    $address = array_filter($addresses, function($item) use ($customer) {
+        // Om detta blir true så får vi tillbaka den adressen i vår array
+        return $item['customer_id'] == $customer['id'];
+    });
+    if (count($address) > 0) {
+        $customers[$index]['address'] = array_shift($address);
+    }
+}
+
+header("Content-Type: application/json");
+echo json_encode($customers);
+
+// lösning 3
+
+$customers = $conn->query('SELECT * FROM customers')->fetchAll();
+
+// lösning 4
+
+$customers = $conn->query('SELECT * FROM customers')->fetchAll();
